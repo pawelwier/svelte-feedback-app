@@ -19,7 +19,14 @@
     }))
   }
 
-  $: editedFeedback = get(FeedbackStore).selectedFeedback
+  const {id, rating, text, name} = get(FeedbackStore).selectedFeedback
+
+  let editedFeedback = {
+    id,
+    rating,
+    text,
+    name,
+  }
 </script>
 
 <form class="edit-feedback-form" on:submit|preventDefault={editFeedback}>
