@@ -8,7 +8,7 @@
       }))
   }
 
-  const handleSelectFeedbackEdit = (itemId) => {
+  const handleSelectFeedbackEdit = () => {
     showEditTextPopup()
     setSelectedFeedbackItem()
   }
@@ -28,10 +28,12 @@
   }
 
   export let item
+  
+  $: ratingClass = item.rating < 4 ? 'low' : item.rating < 8 ? 'mid' : 'high'
 </script>
 
 <div class="feedback-card">
-  <div class="feedback-rating rounded-item">{item.rating}</div>
+  <div class="feedback-rating rounded-item {ratingClass}">{item.rating}</div>
   <div class="feedback-edit rounded-item" on:click={() => handleSelectFeedbackEdit(item.id)}>Edit</div>
   <div class="feedback-close rounded-item" on:click={() => handleItemDelete(item.id)}>X</div>
   {item.text}
@@ -40,9 +42,9 @@
 
 <style>
   .feedback-card {
-    background-color: #feffbb;
+    background-color: #f3f3e7;
     border-radius: 10px;
-    border: 2px solid rgb(114, 117, 62);
+    border: 2px solid rgb(158, 159, 142);
     margin: 50px 0;
     padding: 20px 30px;
     font-size: 18px;
@@ -57,10 +59,18 @@
   .feedback-rating {
     top: -15px;
     left:-10px;
-    background-color: rgb(56, 56, 56);
     color: white;
     width: 25px;
     padding: 10px;
+  }
+  .low {
+    background-color: rgb(186, 33, 33);
+  }
+  .mid {
+    background-color: rgb(147, 125, 27);
+  }
+  .high {
+    background-color: rgb(52, 101, 42);
   }
   .feedback-close {
     top: -15px;

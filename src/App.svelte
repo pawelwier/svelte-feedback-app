@@ -4,6 +4,7 @@
   import EditFeedbackForm from './components/EditFeedbackForm.svelte'
   import {FeedbackStore} from './stores/feedbackStore'
   import Popup from './components/Popup.svelte'
+import FeedbackStats from './components/FeedbackStats.svelte'
 </script>
 
 <main>
@@ -15,6 +16,7 @@
   <div class="new-feedback-form">
     <AddFeedbackForm  />
   </div>
+  <FeedbackStats />
   <FeedbackList />
 </main>
 

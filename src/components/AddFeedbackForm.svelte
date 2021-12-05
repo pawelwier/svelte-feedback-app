@@ -1,37 +1,27 @@
 <script>
   import {v4} from 'uuid';
   import {FeedbackStore} from '../stores/feedbackStore'
+  import RatingSelect from './util/RatingSelect.svelte'
 
-  let ratingOption = 1
   let rating
   let text = ''
   let name = ''
-
-  const maxRating = 10
-  const ratingOptions = []
-
-  while (ratingOption <= maxRating) {
-    ratingOptions.push(ratingOption)
-    ratingOption++
-  }
   
   const feedbackSubmit = () => {
+    if (!submittable) return
     FeedbackStore.update(current => {
       return {
         ...current,
         feedbacks: [
+          ...current.feedbacks,
           {
             id: v4(),
             rating,
             text,
             name,
           }, 
-          ...current.feedbacks
         ]
       }
-    })
-    FeedbackStore.subscribe(current => {
-      console.log(current)
     })
     rating = null
     text = ''
@@ -39,18 +29,12 @@
   }
 
   $: submittable = rating && text && name
-
 </script>
 
 <div class="form-wrapper">
   <h2>Add new feedback</h2>
   <form on:submit|preventDefault={feedbackSubmit}>
-    <select bind:value={rating}>
-      <option value={null}> -- </option>
-      {#each ratingOptions as r (r)}
-        <option value={r}>{r}</option>
-      {/each}
-    </select>
+    <RatingSelect maxRating={10} {rating} on:rating-select={(e) => rating = e.detail} />
     <input bind:value={text} placeholder="Enter new feedback" />
     <input bind:value={name} placeholder="Enter your name" />
     <button disabled={!submittable} type="submit">Send</button>
