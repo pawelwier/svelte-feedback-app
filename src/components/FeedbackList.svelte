@@ -5,8 +5,8 @@
 </script>
 
 <div>
-  {#if $FeedbackStore.length}
-  {#each $FeedbackStore as item}
+  {#if $FeedbackStore.feedbacks.length}
+  {#each $FeedbackStore.feedbacks as item}
     <FeedbackItem {item} />
   {/each}
   {:else}

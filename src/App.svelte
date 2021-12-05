@@ -1,15 +1,19 @@
 <script>
-import FeedbackList from './components/FeedbackList.svelte'
-import FeedbackForm from './components/FeedbackForm.svelte'
-
-  const handleFeedbackSubmit = (e) => {
-    feedbacks = [e.detail, ...feedbacks]
-  }
+  import FeedbackList from './components/FeedbackList.svelte'
+  import AddFeedbackForm from './components/AddFeedbackForm.svelte'
+  import EditFeedbackForm from './components/EditFeedbackForm.svelte'
+  import {FeedbackStore} from './stores/feedbackStore'
+  import Popup from './components/Popup.svelte'
 </script>
 
 <main>
+  {#if $FeedbackStore.displayEditFeedbackPopup}
+  <Popup>
+    <EditFeedbackForm />
+  </Popup>
+  {/if}
   <div class="new-feedback-form">
-    <FeedbackForm on:feedback-submit={handleFeedbackSubmit} />
+    <AddFeedbackForm  />
   </div>
   <FeedbackList />
 </main>

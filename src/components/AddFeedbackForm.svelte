@@ -17,22 +17,28 @@
   
   const feedbackSubmit = () => {
     FeedbackStore.update(current => {
-      return [
-        {
-          id: v4(),
-          rating,
-          text,
-          name,
-        }, 
-      ...current
-      ]
+      return {
+        ...current,
+        feedbacks: [
+          {
+            id: v4(),
+            rating,
+            text,
+            name,
+          }, 
+          ...current.feedbacks
+        ]
+      }
+    })
+    FeedbackStore.subscribe(current => {
+      console.log(current)
     })
     rating = null
     text = ''
     name = ''
   }
 
-$: submittable = rating && text && name
+  $: submittable = rating && text && name
 
 </script>
 
