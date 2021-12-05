@@ -1,8 +1,17 @@
 <script>
   import FeedbackItem from './FeedbackItem.svelte'
-  export let item
+  import {FeedbackStore} from '../stores/feedbackStore'
+
 </script>
 
 <div>
-  <FeedbackItem {item} on:feedback-delete />
+  {#if $FeedbackStore.length}
+  {#each $FeedbackStore as item}
+    <FeedbackItem {item} />
+  {/each}
+  {:else}
+    <h3>
+      No feedback items available
+    </h3>
+  {/if}
 </div>

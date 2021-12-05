@@ -1,42 +1,53 @@
 <script>
-  import {createEventDispatcher} from 'svelte'
   import {v4} from 'uuid';
+  import {FeedbackStore} from '../stores/feedbackStore'
 
-  const dispatch = createEventDispatcher()
-
-  let rating = 1
+  let ratingOption = 1
+  let rating
   let text = ''
   let name = ''
 
   const maxRating = 10
   const ratingOptions = []
 
-  while (rating <= maxRating) {
-    ratingOptions.push(rating)
-    rating++
+  while (ratingOption <= maxRating) {
+    ratingOptions.push(ratingOption)
+    ratingOption++
   }
   
   const feedbackSubmit = () => {
-    dispatch('feedback-submit', {
-      id: v4(),
-      rating,
-      text,
-      name,
+    FeedbackStore.update(current => {
+      return [
+        {
+          id: v4(),
+          rating,
+          text,
+          name,
+        }, 
+      ...current
+      ]
     })
+    rating = null
+    text = ''
+    name = ''
   }
+
+$: submittable = rating && text && name
+
 </script>
 
 <div class="form-wrapper">
   <h2>Add new feedback</h2>
   <form on:submit|preventDefault={feedbackSubmit}>
-    <select on:change={(e) => rating = e.target.value}>
-      {#each ratingOptions as ratingOption (ratingOption)}
-        <option value={ratingOption}>{ratingOption}</option>
+    <select bind:value={rating}>
+      <option value={null}> -- </option>
+      {#each ratingOptions as r (r)}
+        <option value={r}>{r}</option>
       {/each}
     </select>
     <input bind:value={text} placeholder="Enter new feedback" />
     <input bind:value={name} placeholder="Enter your name" />
-    <button type="submit">Send</button>
+    <button disabled={!submittable} type="submit">Send</button>
   </form>
 </div>
 

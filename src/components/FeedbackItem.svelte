@@ -1,14 +1,18 @@
 <script>
-  import {createEventDispatcher} from 'svelte'
+  import {FeedbackStore} from '../stores/feedbackStore'
 
-  const dispatch = createEventDispatcher()
+  const handleItemDelete = (itemId) =>  {
+    FeedbackStore.update(current => {
+      return current.filter(({id}) => itemId !== id)
+    })
+  }
 
   export let item
 </script>
 
 <div class="feedback-card">
   <div class="feedback-rating rounded-item">{item.rating}</div>
-  <div class="feedback-close rounded-item" on:click={() => dispatch('feedback-delete', item.id)}>X</div>
+  <div class="feedback-close rounded-item" on:click={() => handleItemDelete(item.id)}>X</div>
   {item.text}
   <div class="feedback-name rounded-item">{item.name}</div>
 </div>
